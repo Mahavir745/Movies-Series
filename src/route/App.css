@@ -1,0 +1,27 @@
+.main-container{
+  display: flex;
+  width: 100%;
+}
+.container-child{
+  width: 100%;
+}
+
+.sidebar{
+  min-height: 100vh;
+}
+
+.movielist_container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 120px;
+  margin-top: 86px;
+
+  div{
+    flex-shrink: 0;
+  }
+}
+
+.loading{
+  height: 50vh;
+}
