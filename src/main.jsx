@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './route/App'
 import MoviesLIst from './component/MoviesLIst'
 import ShowList from './component/ShowList'
+import AnimationsList from './component/AnimationsList'
 
 const route = createBrowserRouter([
   {
@@ -11,7 +12,8 @@ const route = createBrowserRouter([
     element: <App/>,
     children:[
       {path: '/', element: <MoviesLIst/>},
-      {path: "/shows", element: <ShowList/>}
+      {path: "/shows", element: <ShowList/>},
+      {path: "/animation", element: <AnimationsList/>}
     ]
   }
 ])

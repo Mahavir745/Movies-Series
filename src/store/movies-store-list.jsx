@@ -4,10 +4,12 @@ export const MovieListContent = createContext(
   {
     movieslist: [],
     showslist: [],
+    animelist: [],
     filterData: () => { },
     headerTitle: {},
     addMovies: () => { },
     addShows: () => { },
+    addAnime: () =>{},
     isfetched: false,
   }
 )
@@ -30,7 +32,6 @@ const HandleMoviesReducer = (currentMovielist, action) => {
   return newMovieList;
 }
 
-
 const HandleShowsReducer = (currentShowslist, action) => {
   let newShowslist = currentShowslist;
   if (action.type === "ADD_SHOWS") {
@@ -38,13 +39,27 @@ const HandleShowsReducer = (currentShowslist, action) => {
   }
   return newShowslist;
 }
+
+const HandleAnimeReducer = (currentAnimelist, action) => {
+  let newAnimelist = currentAnimelist;
+  if (action.type === "ADD_ANIME") {
+    newAnimelist = action.payload
+  }
+  return newAnimelist;
+}
+
+
+
 const MoviesStoreProvider = ({ children }) => {
 
   const [movieslist, dispatchedmovie] = useReducer(HandleMoviesReducer, [])
   const [showslist, dispatchedshows] = useReducer(HandleShowsReducer, [])
+  const [animelist, dispatchedAnime] = useReducer(HandleAnimeReducer, [])
+
 
   const [isfetched, setIsFetched] = useState()
 
+  //! for movies FETCHING-->
   const addMovies = (movies) => {
     dispatchedmovie({
       type: "ADD_MOVIES",
@@ -63,7 +78,6 @@ const MoviesStoreProvider = ({ children }) => {
     })
   }
 
-  //! for movies -->
   useEffect(() => {
     const controller = new AbortController;
     const signal = controller.signal;
@@ -92,14 +106,13 @@ const MoviesStoreProvider = ({ children }) => {
     )
   }, [])
 
-
+  //! for shows FETCHING-->
   const addShows = (shows) => {
     dispatchedshows({
       type: "ADD_SHOWS",
       payload: shows
     })
   }
-  //! for shows -->
   useEffect(() => {
     const controller = new AbortController;
     const signal = controller.signal;
@@ -129,8 +142,45 @@ const MoviesStoreProvider = ({ children }) => {
 
 
 
+  //! for anime FETCHING-->
+  const addAnime = (anime) => {
+    dispatchedAnime({
+      type: "ADD_ANIME",
+      payload: anime
+    })
+  }
+
+  useEffect(() => {
+    const controller = new AbortController;
+    const signal = controller.signal;
+
+    const url = 'https://tvshow.p.rapidapi.com/Movie/NowPlaying?Page=1&Language=en-US&Adult=true';
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': 'a1c3504043mshb437baae126e479p159a82jsn012bad912a12',
+        'x-rapidapi-host': 'tvshow.p.rapidapi.com'
+      }
+    };
+    
+    fetch(url, options, { signal })
+      .then(res => res.json())
+      .then((data) => {
+        // console.log(data)
+        addAnime(data)
+      })
+
+    return (
+      () => {
+        controller.abort()
+      }
+    )
+  }, [])
+
+
+
   //! for headline
-  const [selectedtab, setSelectedTab] = useState("Movies")
+  const [selectedtab, setSelectedTab] = useState("Animation & Adventure")
   const headerTitle = {
     selectedtab,
     setSelectedTab
@@ -143,8 +193,10 @@ const MoviesStoreProvider = ({ children }) => {
         movieslist,
         showslist,
         isfetched,
+        animelist,
         addMovies,
         addShows,
+        addAnime,
         filterData,
       }
     }>

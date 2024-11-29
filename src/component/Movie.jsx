@@ -19,7 +19,7 @@ const Movie = ({movieInfo}) => {
         <p className="card-text">Description: {movieInfo.description}</p>
         <p className="card-text">Directors: {movieInfo.genre.map((item)=> <button className='btn btn-outline-info m-2' key={item}>{item}</button>)}</p>
         <label htmlFor="imdb">For More Information: </label>
-        <a className='link link-danger m-1' target='_blank' href={`${movieInfo.imdbid}`}
+        <a className='link link-danger m-1' target='_blank' href={`${movieInfo.imdb_link}`}
         >IMDB</a>
 
         </div>
