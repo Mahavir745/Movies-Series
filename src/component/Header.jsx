@@ -1,12 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import { MovieListContent } from '../store/movies-store-list'
 
 const Header = () => {
 
-  const {headerTitle} = useContext(MovieListContent)
+  const {headerTitle,filterData} = useContext(MovieListContent)
   const selectedtab = headerTitle.selectedtab
 
-
+  const Handleinputfilter = (e)=>{
+    filterData(e.target.value)
+    console.log(e.target.value)
+  }
+  
   return (
     <header className="p-3 bg-black heading" style={{position:'fixed',top:"0px",width:"100%",zIndex:"100"}} >
     <div className="container bg-black ">
@@ -23,7 +27,7 @@ const Header = () => {
 
 
         <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" className="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search" />
+          <input type="search" onChange={Handleinputfilter} className="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search" />
         </form>
 
         <div className="text-end">

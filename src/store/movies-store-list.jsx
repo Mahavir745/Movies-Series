@@ -1,12 +1,14 @@
-import { createContext, useEffect, useReducer, useState } from "react"
+import { act, createContext, useEffect, useReducer, useState } from "react"
 
 export const MovieListContent = createContext(
   {
     movieslist: [],
     showslist: [],
-    headerTitle:{},
+    filterData: () => { },
+    headerTitle: {},
     addMovies: () => { },
-    addShows: ()=> {}
+    addShows: () => { },
+    isfetched: false,
   }
 )
 
@@ -15,12 +17,28 @@ const HandleMoviesReducer = (currentMovielist, action) => {
   if (action.type === "ADD_MOVIES") {
     newMovieList = action.payload.movies
   }
+  else if (action.type === "ADD_FILTER_MOVIES") {
+
+    if (action.payload.filterInput !== " ") {
+      newMovieList = currentMovielist.filter((movie) => {
+        let movieTitle = movie.title.toLowerCase()
+        if (movieTitle.includes(action.payload.filterInput.toLowerCase())) {
+          return movie
+        }
+      })
+    }
+    else {
+      return newMovieList
+    }
+
+
+  }
   return newMovieList;
 }
 
 const HandleShowsReducer = (currentShowslist, action) => {
   let newShowslist = currentShowslist;
-  if(action.type === "ADD_SHOWS"){
+  if (action.type === "ADD_SHOWS") {
     newShowslist = action.payload
   }
   return newShowslist;
@@ -30,6 +48,7 @@ const MoviesStoreProvider = ({ children }) => {
   const [movieslist, dispatchedmovie] = useReducer(HandleMoviesReducer, [])
   const [showslist, dispatchedshows] = useReducer(HandleShowsReducer, [])
 
+  const [isfetched, setIsFetched] = useState()
 
   const addMovies = (movies) => {
     dispatchedmovie({
@@ -40,10 +59,20 @@ const MoviesStoreProvider = ({ children }) => {
     })
   }
 
+  const filterData = (filterInput) => {
+    dispatchedmovie({
+      type: "ADD_FILTER_MOVIES",
+      payload: {
+        filterInput
+      }
+    })
+  }
+
   //! for movies -->
   useEffect(() => {
     const controller = new AbortController;
     const signal = controller.signal;
+    setIsFetched(false)
 
     const url = 'https://moviesverse1.p.rapidapi.com/new-horror';
     const options = {
@@ -58,6 +87,7 @@ const MoviesStoreProvider = ({ children }) => {
       .then(res => res.json())
       .then((data) => {
         addMovies(data.list)
+        setIsFetched(true)
       })
 
     return (
@@ -67,7 +97,8 @@ const MoviesStoreProvider = ({ children }) => {
     )
   }, [])
 
-  const addShows = (shows) =>{
+
+  const addShows = (shows) => {
     dispatchedshows({
       type: "ADD_SHOWS",
       payload: shows
@@ -87,22 +118,24 @@ const MoviesStoreProvider = ({ children }) => {
       }
     };
 
-    fetch(url, options,{signal})
+    fetch(url, options, { signal })
       .then(res => res.json())
       .then((data) => {
         // console.log(data.movies)
         addShows(data.movies)
       })
 
-      return (
-        ()=>{
-          controller.abort()
-        }
-      )
-  },[])
+    return (
+      () => {
+        controller.abort()
+      }
+    )
+  }, [])
+
+
 
   //! for headline
-  const [selectedtab,setSelectedTab] = useState("Horror Movies")
+  const [selectedtab, setSelectedTab] = useState("Horror Movies")
   const headerTitle = {
     selectedtab,
     setSelectedTab
@@ -114,8 +147,10 @@ const MoviesStoreProvider = ({ children }) => {
         headerTitle,
         movieslist,
         showslist,
+        isfetched,
         addMovies,
         addShows,
+        filterData,
       }
     }>
       {children}
@@ -123,27 +158,5 @@ const MoviesStoreProvider = ({ children }) => {
   )
 }
 
-const defaultData = [
-  {
-    title: "Don't move",
-    timeline: "1hr 30m",
-    image: "url",
-    starsList: ["mohan", "rohan",],
-    releasePeriod: "2024",
-    imdbRating: "5.8 (27k)",
-    description: "a new movie is added",
-    directors: ["mahavir", "sonna"]
-  },
-  {
-    title: "Don't move",
-    timeline: "1hr 30m",
-    image: "url",
-    starsList: ["mohan", "rohan",],
-    releasePeriod: "2024",
-    imdbRating: "5.8 (27k)",
-    description: "a new movie is added",
-    directors: ["mahavir", "sonna"]
-  }
-]
 
 export default MoviesStoreProvider;

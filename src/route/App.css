@@ -24,4 +24,24 @@
 
 .loading{
   height: 50vh;
+  width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid; */
+
+  div{
+    /* border: 1px solid red; */
+    margin-left: 1rem;
+  }
+}
+
+.welcomeMessage{
+  /* border: 1px solid red; */
+  width: 500px;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
