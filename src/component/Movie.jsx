@@ -13,14 +13,13 @@ const Movie = ({movieInfo}) => {
         <div className='movie_info w-50'>        
         <h1 className="card-text">{movieInfo.title}</h1>
         <p className="timezone bg-success-subtle" style={{padding:"10px 10px"}}>
-        <span className="card-text">Released: {movieInfo.releasePeriod} <span className='bg-dark p-2 text-white m-1'>IMDB Rating: <CiStar style={{fontSize: "24px",color: 'yellow'}}/>{movieInfo.imdbRating}</span></span>
-        <p className="card-text">Timeline: {movieInfo.timeline}</p>
+        <span className="card-text">Released: {movieInfo.year} <span className='bg-dark p-2 text-white m-1'>IMDB Rating: <CiStar style={{fontSize: "24px",color: 'yellow'}}/>{movieInfo.rating}</span></span>
+        {/* <p className="card-text">Timeline: {movieInfo.timeline}</p> */}
         </p>
         <p className="card-text">Description: {movieInfo.description}</p>
-        <p className="card-text">Directors: {movieInfo.directors.map((item)=> <button className='btn btn-outline-info m-2' key={item}>{item}</button>)}</p>
-        <p className="card-text">Actors: {movieInfo.starsList.map((item)=> <button className='btn bg-warning text-white m-2' key={item}>{item}</button>)}</p>
+        <p className="card-text">Directors: {movieInfo.genre.map((item)=> <button className='btn btn-outline-info m-2' key={item}>{item}</button>)}</p>
         <label htmlFor="imdb">For More Information: </label>
-        <a className='link link-danger m-1' target='_blank' href={`${movieInfo.link}`}
+        <a className='link link-danger m-1' target='_blank' href={`${movieInfo.imdbid}`}
         >IMDB</a>
 
         </div>

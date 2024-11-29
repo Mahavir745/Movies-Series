@@ -22,12 +22,12 @@ const Sidebar = () => {
       </a>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item" onClick={()=> setSelectedTab("Horror Movies")}>
-          <Link to="/" className={`nav-link text-white ${selectedtab === "Horror Movies" && "bg-danger"}`} current="page">
+        <li className="nav-item" onClick={()=> setSelectedTab("Movies")}>
+          <Link to="/" className={`nav-link text-white ${selectedtab === "Movies" && "bg-danger"}`} current="page">
             <svg className="bi pe-none me-2" width={16} height={16}>
-              <use xlinkHref="#Horror-Movies" />
+              <use xlinkHref="#Movies" />
             </svg>
-            Horror Movies
+            Movies
           </Link>
         </li>
         <li className="nav-item"  onClick={()=> setSelectedTab("Shows")}>

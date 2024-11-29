@@ -5,10 +5,14 @@ const Header = () => {
 
   const {headerTitle,filterData} = useContext(MovieListContent)
   const selectedtab = headerTitle.selectedtab
+  const inputElement = useRef();
+
 
   const Handleinputfilter = (e)=>{
-    filterData(e.target.value)
-    console.log(e.target.value)
+    e.preventDefault()
+    const input = inputElement.current.value
+    console.log(input)
+    filterData(input)
   }
   
   return (
@@ -27,13 +31,8 @@ const Header = () => {
 
 
         <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" onChange={Handleinputfilter} className="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search" />
+          <input type="search" ref={inputElement} onChange={(e)=>Handleinputfilter(e)} className="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search" />
         </form>
-
-        <div className="text-end">
-          <button type="button" className="btn btn-outline-light me-2">Login</button>
-          <button type="button" className="btn btn-warning">Sign-up</button>
-        </div>
       </div>
     </div>
   </header>
