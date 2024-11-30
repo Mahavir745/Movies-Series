@@ -6,14 +6,13 @@ import Loading from './Loading'
 
 const ShowList = () => {
 
-  const {showslist} = useContext(MovieListContent)
-  console.log(showslist)
-  
-
+  const {showslist,allFechingStatus} = useContext(MovieListContent)
+  let isfetched = allFechingStatus.isfetched
   return (
     <div className='movielist_container'>
-      {showslist.length === 0 && <Loading/> }
-      {showslist.map(show => <Show key={show.id} show={show}/>)}
+      {!isfetched && showslist.length === 0 && <Loading/> }
+      {isfetched && showslist.length === 0 && <WelcomeMessage/>}
+      {showslist.map(show => <Show key={show.titile} show={show}/>)}
     </div>
     
   )

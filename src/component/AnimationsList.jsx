@@ -5,13 +5,14 @@ import Loading from './Loading'
 import WelcomeMessage from './WelcomeMessage'
 
 const AnimationsList = () => {
-  const {animelist,isfetched} = useContext(MovieListContent)
+  const {animelist,allFechingStatus} = useContext(MovieListContent)
+
+  let isfetched = allFechingStatus.isfetched
 
   return (
     <div className='movielist_container'>
     {!isfetched && animelist.length === 0 && <Loading/>}
     {isfetched && animelist.length === 0 && <WelcomeMessage/>}
-
      {animelist.map((anime,index)=>(
       <Anime Anime={anime} key={anime.id}></Anime>
      ))}

@@ -15,7 +15,7 @@ const Anime = ({Anime}) => {
       <p className="card-text">Orginal Language: {Anime.originalLanguage}</p>
       </p>
       <p className="card-text">Description: {Anime.overview}</p>
-      <p className="card-text">Directors: {Anime.genres.map((item)=> <button className='btn btn-outline-info m-2' key={item}>{item}</button>)}</p>
+      <p className="card-text">Genres: {Anime.genres.map((item)=> <button className='btn btn-outline-info m-2' key={item}>{item}</button>)}</p>
       </div>
     </div>
   </div>

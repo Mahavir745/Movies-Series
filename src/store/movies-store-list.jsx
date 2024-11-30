@@ -10,7 +10,7 @@ export const MovieListContent = createContext(
     addMovies: () => { },
     addShows: () => { },
     addAnime: () =>{},
-    isfetched: false,
+    allFechingStatus: { },
   }
 )
 
@@ -58,6 +58,9 @@ const MoviesStoreProvider = ({ children }) => {
 
 
   const [isfetched, setIsFetched] = useState()
+  const [isshowfetched, setIsshowFetched] = useState()
+  const [isanimefetched, setIsanimeFetched] = useState()
+
 
   //! for movies FETCHING-->
   const addMovies = (movies) => {
@@ -83,19 +86,19 @@ const MoviesStoreProvider = ({ children }) => {
     const signal = controller.signal;
     setIsFetched(false)
 
-    const url = 'https://imdb-top-100-movies.p.rapidapi.com/';
+    const url = 'https://anime-db.p.rapidapi.com/anime?page=1&size=10&search=Fullmetal&genres=Fantasy%2CDrama&sortBy=ranking&sortOrder=asc';
     const options = {
       method: 'GET',
       headers: {
         'x-rapidapi-key': 'a1c3504043mshb437baae126e479p159a82jsn012bad912a12',
-        'x-rapidapi-host': 'imdb-top-100-movies.p.rapidapi.com'
+        'x-rapidapi-host': 'anime-db.p.rapidapi.com'
       }
     };
 
     fetch(url, options, { signal })
       .then(res => res.json())
       .then((data) => {
-        addMovies(data)
+        addMovies(data.data)
         setIsFetched(true)
       })
 
@@ -116,7 +119,7 @@ const MoviesStoreProvider = ({ children }) => {
   useEffect(() => {
     const controller = new AbortController;
     const signal = controller.signal;
-
+    setIsshowFetched(false)
     const url = 'https://movies-api14.p.rapidapi.com/shows';
     const options = {
       method: 'GET',
@@ -131,6 +134,7 @@ const MoviesStoreProvider = ({ children }) => {
       .then((data) => {
         // console.log(data.movies)
         addShows(data.movies)
+        setIsshowFetched(true)
       })
 
     return (
@@ -153,6 +157,7 @@ const MoviesStoreProvider = ({ children }) => {
   useEffect(() => {
     const controller = new AbortController;
     const signal = controller.signal;
+    setIsanimeFetched(false)
 
     const url = 'https://tvshow.p.rapidapi.com/Movie/NowPlaying?Page=1&Language=en-US&Adult=true';
     const options = {
@@ -167,6 +172,7 @@ const MoviesStoreProvider = ({ children }) => {
       .then(res => res.json())
       .then((data) => {
         // console.log(data)
+        setIsanimeFetched(true)
         addAnime(data)
       })
 
@@ -186,13 +192,21 @@ const MoviesStoreProvider = ({ children }) => {
     setSelectedTab
   }
 
+
+  const allFechingStatus = {
+    isfetched : false,
+    isshowfetched : false,
+    isanimefetched : false
+
+  }
+
   return (
     <MovieListContent.Provider value={
       {
         headerTitle,
         movieslist,
         showslist,
-        isfetched,
+        allFechingStatus,
         animelist,
         addMovies,
         addShows,
