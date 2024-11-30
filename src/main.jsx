@@ -11,9 +11,9 @@ const route = createBrowserRouter([
     path: "/",
     element: <App/>,
     children:[
-      {path: '/', element: <MoviesLIst/>},
+      {path: '/', element: <AnimationsList/>},
       {path: "/shows", element: <ShowList/>},
-      {path: "/animation", element: <AnimationsList/>}
+      {path: "/movies", element: <MoviesLIst/>}
     ]
   }
 ])
